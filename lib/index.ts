@@ -8,6 +8,7 @@ import FormidableNamespace from 'formidable'
 import type Formidable from 'formidable/Formidable'
 import * as fs from 'fs'
 import { type IncomingMessage } from 'http'
+
 export const kIsMultipart = Symbol.for('[FastifyMultipart.isMultipart]')
 export const kIsMultipartParsed = Symbol.for('[FastifyMultipart.isMultipartParsed]')
 export const kFileSavedPaths = Symbol.for('[FastifyMultipart.fileSavedPaths]')
@@ -87,7 +88,7 @@ const plugin: FastifyPluginAsync<FastifyFormidableOptions> = async function (fas
 
   fastify.decorateRequest(kIsMultipart, false)
   fastify.decorateRequest(kIsMultipartParsed, false)
-  fastify.decorateRequest(kFileSavedPaths, null)
+  fastify.decorateRequest(kFileSavedPaths,)
   fastify.decorateRequest('files', null)
 
   fastify.decorateRequest('parseMultipart', async function (this: FastifyRequest, decoratorOptions?: Formidable | Options) {
@@ -105,7 +106,7 @@ const plugin: FastifyPluginAsync<FastifyFormidableOptions> = async function (fas
   })
 
   if (options.addContentTypeParser === true && options.addHooks === true) {
-    throw new Error('Cannot enable `addContentTypeParser` togather with `addHooks`')
+    throw new Error('Cannot enable `addContentTypeParser` together with `addHooks`')
   }
 
   if (options.addContentTypeParser === true) {
@@ -162,9 +163,11 @@ export const ajvBinaryFormat = function (ajv: any): void {
     }
   })
 }
+
 export const FastifyFormidable = FastifyPlugin(plugin, {
-  fastify: '4.x',
+  fastify: '5.x',
   name: 'fastify-formidable',
   dependencies: []
 })
+
 export default FastifyFormidable
